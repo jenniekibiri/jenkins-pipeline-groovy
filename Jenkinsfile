@@ -47,7 +47,7 @@ pipeline {
             input {
                 message 'select the environment to deploy to'
                 ok 'Deploy'
-                cancel 'Abort'
+            
                 parameters {
                     choice( name :'one', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to' )
                     choice( name :'two', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to' )
