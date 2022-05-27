@@ -10,6 +10,12 @@ pipeline {
     booleanParam( name :'executeTests', description:'Execute the tests', defaultValue:false )
     }
     stages {
+
+        stage('Build') {
+            steps {
+                echo "Building the application"
+            }
+        }
         stage("init"){
             steps{
                 script{
