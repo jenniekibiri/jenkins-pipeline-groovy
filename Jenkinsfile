@@ -8,7 +8,7 @@ pipeline {
         SERVER_CREDENTIALS =  credentials('githubcredentials')
     }
     parameters {
-        choice(name:'version', choices:['1.0', '1.1', '1.2'], description:'Choose the version of the project')
+        choice(name:'VERSION', choices:['1.0', '1.1', '1.2'], description:'Choose the version of the project')
 
         booleanParam(name :'executeTests', description:'Execute the tests', defaultValue:false)
     }
