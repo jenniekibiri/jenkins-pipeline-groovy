@@ -27,6 +27,7 @@ pipeline {
                     params.executeTests
                
                    }
+            }
 
         steps {
             script{
@@ -34,7 +35,7 @@ pipeline {
             }
                 }
       
-        }
+        
         stage('Deploy') {
             steps {script{
                     gv.deployApp()
