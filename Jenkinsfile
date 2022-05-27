@@ -52,7 +52,7 @@ pipeline {
             }
             steps {
                 //credentials
-                withCreditentials([
+                withCredentials([
                 usernamePassword(credentials:'githubcredentials', usernameVariable:'USER', passwordVariable:'PASSWORD')
                 ]) {
                     sh " some script ${USER} ${PASSWORD}"
