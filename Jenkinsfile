@@ -2,31 +2,28 @@
 //import groovy script
 def gv
 
-
 pipeline {
     agent any
-    parameters{
-        
-    choice( name :'version', choices:['1.0','1.1','1.2'],description:'Choose the version of the project' )
-    booleanParam( name :'executeTests', description:'Execute the tests', defaultValue:false )
+    parameters {
+        choice( name :'version', choices:['1.0', '1.1', '1.2'], description:'Choose the version of the project' )
+        booleanParam( name :'executeTests', description:'Execute the tests', defaultValue:false )
     }
     stages {
-
         stage('Build1') {
             steps {
-                echo "Building the application"
+                echo 'Building the application'
             }
         }
-        stage("init"){
-            steps{
-                script{
+        stage('init') {
+            steps {
+                script {
                     gv = load( './script.groovy' )
-                } 
+                }
             }
         }
         stage('Build') {
             steps {
-                script{
+                script {
                     gv.buildApp()
                 }
             }
@@ -35,24 +32,30 @@ pipeline {
             when {
                 expression {
                     params.executeTests
-               
-                   }
+                }
             }
 
-        steps {
-            script{
-                gv.testApp()
-            }
+            steps {
+                script {
+                    gv.testApp()
                 }
+            }
         }
-      
-        
+
         stage('Deploy') {
-            steps {script{
+            //multi env
+            input {
+                message 'select the environment to deploy to'
+                ok 'Deploy'
+                parameters {
+                    choice( name :'environment', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to' )
+                }
+            }
+            steps {
+                script {
                     gv.deployApp()
                 }
             }
-            
         }
     }
 }
