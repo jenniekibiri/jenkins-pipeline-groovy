@@ -4,10 +4,13 @@ def gv
 
 pipeline {
     agent any
-SERVER_CREDENTIALS =  credentials ('github-creds')
+    environment {
+        SERVER_CREDENTIALS =  credentials('githubcredentials')
+    }
     parameters {
-        choice( name :'version', choices:['1.0', '1.1', '1.2'], description:'Choose the version of the project' )
-        booleanParam( name :'executeTests', description:'Execute the tests', defaultValue:false )
+        choice(name:'version', choices:['1.0', '1.1', '1.2'], description:'Choose the version of the project')
+
+        booleanParam(name :'executeTests', description:'Execute the tests', defaultValue:false)
     }
     stages {
         stage('Build1') {
@@ -18,7 +21,7 @@ SERVER_CREDENTIALS =  credentials ('github-creds')
         stage('init') {
             steps {
                 script {
-                    gv = load( './script.groovy' )
+                    gv = load('./script.groovy')
                 }
             }
         }
@@ -48,11 +51,10 @@ SERVER_CREDENTIALS =  credentials ('github-creds')
             input {
                 message 'select the environment to deploy to'
                 ok 'Deploy'
-            
-                parameters {
-                    choice( name :'one', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to' )
-                    choice( name :'two', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to' )
 
+                parameters {
+                    choice(name :'one', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to')
+                    choice(name :'two', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to')
                 }
             }
             steps {
