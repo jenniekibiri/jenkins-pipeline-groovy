@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
-
+//import groovy script
 def gv
+
 
 pipeline {
     agent any
@@ -19,7 +20,7 @@ pipeline {
         stage("init"){
             steps{
                 script{
-                     gv = load "script.groovy"
+                    gv = load( './script.groovy' )
                 } 
             }
         }
