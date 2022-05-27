@@ -1,58 +1,22 @@
-#!/usr/bin/env groovy
-
-def gv
-
 pipeline {
     agent any
-    parameters {
-        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
-        //select the version to deploy
-        booleanParam(name: 'executeTests', defaultValue: true, description: '')
-    }
+
     stages {
-        stage("init") {
-            //load the groovy script
+        stage('Build') {
             steps {
-                script {
-                   gv = load "script.groovy"
-                }
+                echo 'Building..'
             }
         }
-        stage("build") {
+        stage('Test') {
             steps {
-                script {
-                    gv.buildApp()
-                }
+                echo 'Testing..'
             }
         }
-        stage("test") {
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
+        stage('Deploy') {
             steps {
-                script {
-                    gv.testApp()
-                }
+                echo 'Deploying....'
             }
-        }
-        stage("deploy") {
-            //multiple versions to deploy 
-            input{
-                message "select the environment to deploy to"
-                parameters {
-                    choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: '')
-                }
-            }
-            steps {
-                script {
-                    // env.ENV = input message: "Select the environment to deploy to", ok: "Done", parameters: [choice(name: 'ONE', choices: ['dev', 'staging', 'prod'], description: '')]
-                        //single env to deploy
-                    gv.deployApp()
-                    // echo "Deploying to ${ENV}"
-                }
-            }
+            
         }
     }
 }
