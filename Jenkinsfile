@@ -13,11 +13,6 @@ pipeline {
         booleanParam(name :'executeTests', description:'Execute the tests', defaultValue:false)
     }
     stages {
-        stage('Build1') {
-            steps {
-                echo 'Building the application'
-            }
-        }
         stage('init') {
             steps {
                 script {
@@ -47,17 +42,21 @@ pipeline {
         }
 
         stage('Deploy') {
-            //multi env
             input {
                 message 'select the environment to deploy to'
                 ok 'Deploy'
-
                 parameters {
                     choice(name :'one', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to')
                     choice(name :'two', choices:['dev', 'test', 'prod'], description:'Choose the environment to deploy to')
                 }
             }
             steps {
+                //credentials
+                withCreditentials([
+                usernamePassword(credentials:'githubcredentials', usernameVariable:'USER', passwordVariable:'PASSWORD')
+                ]) {
+                    sh " some script ${USER} ${PASSWORD}"
+                }
                 script {
                     gv.deployApp()
                     echo "deploying with credentials: ${SERVER_CREDENTIALS}"
