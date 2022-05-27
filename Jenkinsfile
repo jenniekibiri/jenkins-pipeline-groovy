@@ -52,11 +52,11 @@ pipeline {
             }
             steps {
                 //credentials
-                withCredentials([
-                usernamePassword(credentials:'githubcredentials', usernameVariable:'USER', passwordVariable:'PASSWORD')
-                ]) {
-                    echo  "some script ${USER}"
-                }
+                // withCredentials([
+                // usernamePassword(credentials:'githubcredentials', usernameVariable:'USER', passwordVariable:'PASSWORD')
+                // ]) {
+                //     echo  "some script ${USER}"
+                // }
                 script {
                     gv.deployApp()
                     echo "deploying with credentials: ${SERVER_CREDENTIALS}"
